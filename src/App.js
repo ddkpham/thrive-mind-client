@@ -9,6 +9,7 @@ function App() {
       <h2>Be the best you you can be</h2>
       <h2>Which is about Average</h2>
       <h2>-Killer Mike, run the jewels</h2>
+      <h3>Life Advice from Killer Mike</h3>
     </div>
   );
 }

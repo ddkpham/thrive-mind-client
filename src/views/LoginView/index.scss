@@ -1,0 +1,19 @@
+.login {
+  &__wrapper {
+    width: 100vw;
+    height: 70vh;
+  }
+  &__text-fields {
+    background-color: lightyellow;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px auto;
+    width: 50vw;
+  }
+
+  &__text-field {
+    width: 200px;
+    margin: 15px auto;
+  }
+}

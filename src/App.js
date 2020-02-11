@@ -1,15 +1,15 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import { StylesProvider } from "@material-ui/core/styles";
+import Header from "./components/Header";
+import LoginView from "./views/LoginView";
 
 function App() {
   return (
     <div>
-      <h1>Thrive Mind</h1>
-      <h2>Be the best you you can be</h2>
-      <h2>Which is about Average</h2>
-      <h2>-Killer Mike, run the jewels</h2>
-      <h3>Life Advice from Killer Mike</h3>
+      <StylesProvider injectFirst>
+        <Header />
+        <LoginView />
+      </StylesProvider>
     </div>
   );
 }

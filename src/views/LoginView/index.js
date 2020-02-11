@@ -9,8 +9,21 @@ import "./index.scss";
 function LoginView() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState("");
   const loginRequest = async () => {
-    const resquest = await fetch("http://127.0.0.1:5000/protected");
+    const resquest = await fetch("http://127.0.0.1:5000/login");
+    const body = await resquest.json();
+    const { token } = body;
+    setToken(token);
+    console.log(token);
+  };
+
+  const protectedCheck = async () => {
+    const resquest = await fetch("http://127.0.0.1:5000/protected", {
+      headers: {
+        "x-access-token": token
+      }
+    });
     const body = await resquest.json();
     console.log(body);
   };
@@ -38,8 +51,11 @@ function LoginView() {
           className="login__text-field"
           onChange={evt => setPassword(evt)}
         />
-        <Button variant="contained" color="secondary" onClick={loginRequest}>
-          Secondary
+        <Button variant="contained" color="primary" onClick={loginRequest}>
+          Get Token
+        </Button>
+        <Button variant="contained" color="secondary" onClick={protectedCheck}>
+          Check Auth
         </Button>
       </div>
     </div>

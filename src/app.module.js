@@ -1,0 +1,22 @@
+// ------------------------------------
+// Constants
+// ------------------------------------
+
+const initialState = {}
+// ------------------------------------
+// Actions
+// ------------------------------------
+
+export const actions = {}
+// ------------------------------------
+// Action Handlers
+// ------------------------------------
+const ACTION_HANDLERS = {}
+// ------------------------------------
+// Reducer
+// ------------------------------------
+export default function reducer(state = initialState, action) {
+  const handler = ACTION_HANDLERS[action.type]
+
+  return handler ? handler(state, action) : state
+}

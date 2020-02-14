@@ -7,15 +7,9 @@ import Services from './views/Services'
 
 const Routes = (props) => (
   <Router>
-    <Route path="/">
-      {
-        matches => (
-          matches ? null : <Header />
-        )
-      }
-    </Route>
+    <Route path="/services" component={Header} />
     <Switch>
-      <ProtectedRoute path="/services" component={Services} />
+      <ProtectedRoute exact path="/services" component={Services} />
       <Route path="/" component={Authentication} />
       <Redirect to="/" />
     </Switch>

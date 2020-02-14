@@ -90,8 +90,8 @@ const signIn = (username, password) => async (dispatch) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        username,
-        password,
+        user_name: username,
+        user_password: password,
       })
     })
 

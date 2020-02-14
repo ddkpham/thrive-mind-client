@@ -1,17 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Switch, Route, Redirect, BrowserRouter as Router } from 'react-router-dom'
-import { styled } from '@material-ui/core/styles'
 import Authentication from './views/Authentication'
 import Header from './components/Header'
 import ProtectedRoute from './components/ProtectedRoute'
 import Services from './views/Services'
 import { actions } from './app.module'
-
-const Content = styled('div')({
-  minHeight: '100vh',
-  paddingTop: 70,
-})
 
 const Routes = (props) => {
   const dispatch = useDispatch()

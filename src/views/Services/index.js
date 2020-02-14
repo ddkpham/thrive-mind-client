@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import debounce from 'lodash.debounce'
+import Fuse from 'fuse.js'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
@@ -56,6 +57,15 @@ const Services = (props) => {
   const fetch = useFetch()
   const classes = useStyles()
 
+  const fuseList = new Fuse(services, {
+    keys: [
+      'name',
+      'description',
+      'phone',
+      'email',
+    ]
+  })
+
   useEffect(() => {
     const getServices = async () => {
       try {
@@ -89,8 +99,9 @@ const Services = (props) => {
 
   const handleOnChange = (e) => {
     setQuery(e.target.value)
-    debouncedSearch(e.target.value)
   }
+
+  const filteredServices = query.length ? fuseList.search(query) : services
 
   return (
     <div className={classes.root}>
@@ -111,7 +122,7 @@ const Services = (props) => {
       </Grid>
       <Grid container direction="column" spacing={1}>
         {
-          services.map((x) => (
+          filteredServices.map((x) => (
             <Grid item key={x.id}>
               <ServiceItem {...x} />
             </Grid>

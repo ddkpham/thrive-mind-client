@@ -120,7 +120,7 @@ const signUp = (data) => async (dispatch) => {
         first_name: data.firstName,
         last_name: data.lastName,
         email_address: data.email,
-        user_phone: data.phone,
+        phone: data.phone,
         role: data.role,
         is_seeking: data.isSeeking,
       })

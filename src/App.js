@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Routes from './Routes'
 import configureStore from './configureStore'
 import configureTheme from './configureTheme'
+import './app.css'
 
 function App() {
   const store = configureStore()

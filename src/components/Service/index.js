@@ -1,14 +1,9 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 
-const useStyles = makeStyles({})
-
 const Service = (props) => {
-  const classes = useStyles()
-
   const { name, description, phone, email, is_accepting } = props
 
   return (

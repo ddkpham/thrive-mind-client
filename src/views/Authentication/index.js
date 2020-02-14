@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 const Authentication = (props) => {
   // force logged in users to go to services page
   const token = useSelector(({ app }) => app.token)
-  const { title, content, item, sidebar, container } = useStyles()
+  const { content, sidebar, container } = useStyles()
 
   if (token) return <Redirect to="/services" />
 

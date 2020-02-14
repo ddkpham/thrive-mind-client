@@ -9,6 +9,7 @@ import useFetch from '../../utils/useFetch'
 const useStyles = makeStyles({
   root: {
     padding: 48,
+    backgroundColor: '#E1E7ED',
   },
 })
 
@@ -57,7 +58,7 @@ const Services = (props) => {
     }
 
     getServices()
-  }, [])
+  }, []) // eslint-disable-line
 
   return (
     <div className={classes.root}>

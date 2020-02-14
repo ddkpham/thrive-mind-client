@@ -15,8 +15,8 @@ const Service = (props) => {
         <Typography variant="body2" color="textSecondary" component="p">{description}</Typography>
       </CardContent>
       <CardActions>
-        <Button>Email</Button>
-        <Button>Call</Button>
+        <Button>Email {email}</Button>
+        <Button>Call {phone}</Button>
       </CardActions>
     </Card>
   )

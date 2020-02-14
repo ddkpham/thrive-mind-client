@@ -60,23 +60,26 @@ const Services = (props) => {
     const getServices = async () => {
       try {
         const res = await fetch('/services')
-        const data = await res.json()
-
-        setServices(data)
+        if (res.ok) {
+          const data = await res.json()
+          setServices(data)
+        }
       } catch (err) {
         console.log(err)
       }
     }
 
-    // getServices()
+    getServices()
   }, []) // eslint-disable-line
 
   const searchServices = async (query) => {
-    console.log('searching')
     try {
       const res = await fetch(`/services/search?search=${query}`)
-      const searchedServices = await res.json()
-      setServices(searchedServices)
+
+      if (res.ok) {
+        const searchedServices = await res.json()
+        setServices(searchedServices)
+      }
     } catch (err) {
       console.log(err)
     }

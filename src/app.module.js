@@ -15,6 +15,8 @@ const SIGNUP_REQUEST = 'SIGNUP_REQUEST'
 const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS'
 const SIGNUP_ERROR = 'SIGNUP_ERROR'
 
+const SIGNOUT_SUCCESS = 'SIGNOUT_SUCCESS'
+
 const GET_PROFILE_REQUEST = 'GET_PROFILE_REQUEST'
 const GET_PROFILE_SUCCESS = 'GET_PROFILE_SUCCESS'
 const GET_PROFILE_ERROR = 'GET_PROFILE_ERROR'
@@ -23,8 +25,9 @@ const initialState = {
   signingIn: false,
   signingUp: false,
   loadingProfile: false,
-  user: {},
-  token: null,
+  authenticating: false,
+  user: null,
+  token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1ODE2NTIwNDR9.IeNhs6-QP5DGzSAkkx2W3kIwWU-k8gIKwxVaII0IIUA",
 }
 
 // ------------------------------------
@@ -48,8 +51,9 @@ const authenticateRequest = () => ({
   type: AUTHENTICATE_REQUEST,
 })
 
-const authenticateSuccess = () => ({
+const authenticateSuccess = token => ({
   type: AUTHENTICATE_SUCCESS,
+  token,
 })
 
 const authenticateError = () => ({
@@ -97,10 +101,14 @@ const signIn = (username, password) => async (dispatch) => {
 
     if (res.ok) {
       const { token } = await res.json()
+
+      // add token to localStorage
+      localStorage.setItem('sessionToken', token)
       dispatch(signInSuccess(token))
     }
   } catch (err) {
     dispatch(signInError())
+    localStorage.removeItem('sessionToken')
     console.log(err)
   }
 }
@@ -132,21 +140,27 @@ const signUp = (data) => async (dispatch) => {
     }
   } catch (err) {
     dispatch(signUpError())
+    localStorage.removeItem('sessionToken')
     console.log(err)
     return false
   }
 }
 
 const authenticate = () => async (dispatch) => {
-  const authFetch = useFetch()
+  // const authFetch = useFetch()
   dispatch(authenticateRequest())
 
+  const sessionToken = localStorage.getItem('sessionToken')
+
   try {
-    const res = await authFetch('/protected')
-    console.log(await res.json())
-    dispatch(authenticateSuccess())
+    if (!sessionToken) throw new Error('Session expired.')
+
+    // const res = await authFetch('/protected')
+    // console.log(await res.json())
+    dispatch(authenticateSuccess(sessionToken))
   } catch (err) {
     dispatch(authenticateError())
+    localStorage.removeItem('sessionToken')
     console.log(err)
   }
 }
@@ -166,9 +180,19 @@ const getProfile = () => async (dispatch) => {
   }
 }
 
+const signOut = () => (dispatch) => {
+  try {
+    localStorage.removeItem('sessionToken')
+    dispatch({ type: SIGNOUT_SUCCESS })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const actions = {
   signIn,
   signUp,
+  signOut,
   authenticate,
   getProfile,
 }
@@ -186,15 +210,21 @@ const ACTION_HANDLERS = {
   }),
   [SIGNIN_ERROR]: state => ({
     ...state,
+    token: null,
   }),
   [AUTHENTICATE_REQUEST]: state => ({
     ...state,
+    authenticating: true,
   }),
-  [AUTHENTICATE_SUCCESS]: state => ({
+  [AUTHENTICATE_SUCCESS]: (state, { token }) => ({
     ...state,
+    authenticating: false,
+    token,
   }),
   [AUTHENTICATE_ERROR]: state => ({
     ...state,
+    authenticating: false,
+    token: null,
   }),
   [SIGNUP_REQUEST]: state => ({
     ...state,
@@ -204,6 +234,11 @@ const ACTION_HANDLERS = {
   }),
   [SIGNUP_ERROR]: state => ({
     ...state,
+    token: null,
+  }),
+  [SIGNOUT_SUCCESS]: state => ({
+    ...state,
+    token: null,
   }),
   [GET_PROFILE_REQUEST]: state => ({
     ...state,

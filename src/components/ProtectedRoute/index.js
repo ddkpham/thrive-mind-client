@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const ProtectedRoute = (props) => {
-  const token = useSelector(({ app }) => app.token)
+  const { token } = useSelector(({ app }) => app)
 
   if (!token) return <Redirect to="/login" />
 

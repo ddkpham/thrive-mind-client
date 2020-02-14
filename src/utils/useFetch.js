@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import fetch from './fetch'
 
 const useFetch = () => {
-  const token = useSelector(({ app }) => app.token)
+  const { token } = useSelector(({ app }) => app)
 
   return (url, options = { method: 'GET' }) => {
     if (options.headers) {

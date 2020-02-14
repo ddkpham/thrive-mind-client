@@ -4,7 +4,16 @@ import { actions } from '../app.module'
 
 const useCheckAuth = () => {
   let isSessionValid = false
+  const dispatch = useDispatch()
   const token = useSelector(({ app }) => app.token)
 
   // if token does not exist, don't need to check
+  if (!token) return false
+
+  // check token on backend
+  try {
+    dispatch(actions.authenticate())
+  } catch (err) {
+
+  }
 }

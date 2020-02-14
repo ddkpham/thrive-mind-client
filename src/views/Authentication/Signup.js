@@ -53,7 +53,7 @@ const Signup = (props) => {
   }
 
   const onSignUp = async () => {
-    const isSuccess = dispatch(actions.signUp(user))
+    const isSuccess = await dispatch(actions.signUp(user))
 
     // TODO: handle success feedback
     if (isSuccess) {
@@ -143,7 +143,7 @@ const Signup = (props) => {
           <Link to="/signin"><Button>Back</Button></Link>
         </Grid>
         <Grid item>
-          <Button variant="contained" disableElevation>Next</Button>
+          <Button onClick={onSignUp} variant="contained" disableElevation>Register</Button>
         </Grid>
       </Grid>
     </Grid>

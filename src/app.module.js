@@ -95,8 +95,10 @@ const signIn = (username, password) => async (dispatch) => {
       })
     })
 
-    const token = await res.json()
-    dispatch(signInSuccess(token))
+    if (res.ok) {
+      const { token } = await res.json()
+      dispatch(signInSuccess(token))
+    }
   } catch (err) {
     dispatch(signInError())
     console.log(err)

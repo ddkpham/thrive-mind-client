@@ -1,21 +1,23 @@
 import React from "react";
 import { Provider } from 'react-redux'
-import { StylesProvider } from "@material-ui/core/styles";
+import { StylesProvider, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from '@material-ui/core/CssBaseline'
-import Header from "./components/Header";
 import Routes from './Routes'
 import configureStore from './configureStore'
+import configureTheme from './configureTheme'
 
 function App() {
   const store = configureStore()
+  const theme = configureTheme()
 
   return (
     <div>
       <StylesProvider injectFirst>
         <Provider store={store}>
           <CssBaseline />
-          <Header />
-          <Routes />
+          <ThemeProvider theme={theme}>
+            <Routes />
+          </ThemeProvider>
         </Provider>
       </StylesProvider>
     </div>

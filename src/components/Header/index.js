@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -21,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ButtonAppBar() {
   const classes = useStyles()
+  const user = useSelector(({ app }) => app.user)
 
   return (
     <div className={classes.root}>
@@ -32,7 +34,9 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             thrive mind
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Typography>
+            {user ? user.firstName : 'no user data'}
+          </Typography>
         </Toolbar>
       </AppBar>
     </div>

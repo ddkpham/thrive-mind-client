@@ -28,8 +28,8 @@ const Signup = (props) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const [user, setUser] = useState({
-    user_name: '',
-    user_password: '',
+    username: '',
+    password: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -80,7 +80,7 @@ const Signup = (props) => {
           <Grid item>
             <OutlinedField
               label="Username"
-              name="user_name"
+              name="username"
               value={user.username}
               onChange={handleOnChange}
             />
@@ -88,7 +88,7 @@ const Signup = (props) => {
           <Grid item>
             <OutlinedField
               label="Password"
-              name="user_password"
+              name="password"
               value={user.password}
               onChange={handleOnChange}
             />

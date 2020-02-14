@@ -105,7 +105,7 @@ const signIn = (username, password) => async (dispatch) => {
   }
 }
 
-const signUp = (signUpData) => async (dispatch) => {
+const signUp = (data) => async (dispatch) => {
   dispatch(signUpRequest())
 
   try {
@@ -114,7 +114,16 @@ const signUp = (signUpData) => async (dispatch) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(signUpData)
+      body: JSON.stringify({
+        user_name: data.username,
+        user_password: data.password,
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email_address: data.email,
+        user_phone: data.phone,
+        role: data.role,
+        is_seeking: data.isSeeking,
+      })
     })
 
     if (res.ok) {

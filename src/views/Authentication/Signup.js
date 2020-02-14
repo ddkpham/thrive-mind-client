@@ -117,7 +117,14 @@ const Signup = (props) => {
         </Grid>
         <br />
         <Grid container>
-          <Grid item xs={8}><OutlinedField label="Email" fullWidth /></Grid>
+          <Grid item xs={8}>
+            <OutlinedField
+              label="Email"
+              name="email"
+              value={user.email}
+              onChange={handleOnChange}
+            />
+          </Grid>
         </Grid>
         <br />
         <OutlinedField

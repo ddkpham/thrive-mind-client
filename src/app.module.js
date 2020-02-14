@@ -24,7 +24,7 @@ const initialState = {
   signingUp: false,
   loadingProfile: false,
   user: {},
-  token: null,
+  token: 'asdf',
 }
 
 // ------------------------------------

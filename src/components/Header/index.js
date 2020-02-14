@@ -34,9 +34,9 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             thrive mind
           </Typography>
-          <Typography>
+          <Button>
             {user ? user.firstName : 'no user data'}
-          </Typography>
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

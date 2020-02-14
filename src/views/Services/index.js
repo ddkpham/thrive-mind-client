@@ -63,7 +63,7 @@ const Services = (props) => {
   return (
     <div className={classes.root}>
       <Typography variant="h5" component="h2" gutterBottom>Available Healthcare Services</Typography>
-      <Grid container direction="column" spacing={2}>
+      <Grid container direction="column" spacing={1}>
         {
           services.map((x) => (
             <Grid item key={x.id}>

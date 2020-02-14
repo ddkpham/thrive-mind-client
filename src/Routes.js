@@ -4,15 +4,18 @@ import Authentication from './views/Authentication'
 import Header from './components/Header'
 import ProtectedRoute from './components/ProtectedRoute'
 import Services from './views/Services'
+import Grid from '@material-ui/core/Grid'
 
 const Routes = (props) => (
   <Router>
-    <Route path="/services" component={Header} />
-    <Switch>
-      <ProtectedRoute exact path="/services" component={Services} />
-      <Route path="/" component={Authentication} />
-      <Redirect to="/" />
-    </Switch>
+    <div>
+      <Route path="/services" component={Header} />
+      <Switch>
+        <ProtectedRoute exact path="/services" component={Services} />
+        <Route path="/" component={Authentication} />
+        <Redirect to="/" />
+      </Switch>
+    </div>
   </Router>
 )
 

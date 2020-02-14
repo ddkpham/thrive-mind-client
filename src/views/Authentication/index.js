@@ -9,11 +9,7 @@ import Signup from './Signup'
 
 const useStyles = makeStyles({
   container: { minHeight: '100vh' },
-  content: {
-    padding: '48px 72px',
-    maxHeight: '100vh',
-    overflow: 'auto',
-  },
+  content: { padding: '48px 72px' },
   sidebar: {
     backgroundColor: '#001CF9',
     padding: 48,
@@ -23,11 +19,9 @@ const useStyles = makeStyles({
 const Authentication = (props) => {
   // force logged in users to go to services page
   const token = useSelector(({ app }) => app.token)
-  if (token) {
-
-  }
-
   const { title, content, item, sidebar, container } = useStyles()
+
+  if (token) return <Redirect to="/services" />
 
   return (
     <Grid container classes={{ container }}>

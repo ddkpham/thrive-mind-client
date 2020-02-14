@@ -3,6 +3,7 @@ import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
+import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
@@ -14,6 +15,9 @@ const useStyles = makeStyles({
   },
   action: {
     marginTop: 48,
+  },
+  divider: {
+    margin: '24px 0',
   },
 })
 
@@ -69,6 +73,27 @@ const Signup = (props) => {
           Register for an account with Thrive Mind.
         </Typography>
       </div>
+      <Grid item>
+        <Grid container spacing={2}>
+          <Grid item>
+            <OutlinedField
+              label="Username"
+              name="username"
+              value={user.username}
+              onChange={handleOnChange}
+            />
+          </Grid>
+          <Grid item>
+            <OutlinedField
+              label="Password"
+              name="password"
+              value={user.password}
+              onChange={handleOnChange}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+      <Divider className={classes.divider} />
       <Grid item>
         <Grid container spacing={2}>
           <Grid item>
@@ -138,6 +163,7 @@ const Signup = (props) => {
           >No</Button>
         </Grid>
       </Grid>
+      <Divider className={classes.divider} />
       <Grid container className={classes.action} justify="flex-end" spacing={2}>
         <Grid item>
           <Link to="/signin"><Button>Back</Button></Link>

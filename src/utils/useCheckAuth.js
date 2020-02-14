@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { actions } from '../app.module'
 
 const useCheckAuth = () => {
-  let isSessionValid = false
   const dispatch = useDispatch()
   const token = useSelector(({ app }) => app.token)
 
@@ -14,6 +13,6 @@ const useCheckAuth = () => {
   try {
     dispatch(actions.authenticate())
   } catch (err) {
-
+    console.log(err)
   }
 }

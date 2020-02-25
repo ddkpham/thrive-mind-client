@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: thrive-mind-client
-          image: ddkpham/thrive-mind-client:v3
+          image: ddkpham/thrive-mind-client:v2
           ports:
             - containerPort: 80

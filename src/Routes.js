@@ -1,21 +1,26 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Switch, Route, Redirect, BrowserRouter as Router } from 'react-router-dom'
-import Authentication from './views/Authentication'
-import Header from './components/Header'
-import ProtectedRoute from './components/ProtectedRoute'
-import Services from './views/Services'
-import { actions } from './app.module'
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Switch,
+  Route,
+  Redirect,
+  BrowserRouter as Router
+} from "react-router-dom";
+import Authentication from "./views/Authentication";
+import Header from "./components/Header";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Services from "./views/Services";
+import { actions } from "./app.module";
 
-const Routes = (props) => {
-  const dispatch = useDispatch()
-  const { authenticating } = useSelector(({ app }) => app)
+const Routes = props => {
+  const dispatch = useDispatch();
+  const { authenticating } = useSelector(({ app }) => app);
 
   useEffect(() => {
-    dispatch(actions.authenticate())
-  }, [])
+    dispatch(actions.authenticate());
+  }, [dispatch]);
 
-  if (authenticating) return null
+  if (authenticating) return null;
 
   return (
     <Router>
@@ -26,10 +31,10 @@ const Routes = (props) => {
         <Redirect to="/" />
       </Switch>
     </Router>
-  )
-}
+  );
+};
 
-Routes.propTypes = {}
-Routes.defaultProps = {}
+Routes.propTypes = {};
+Routes.defaultProps = {};
 
-export default Routes
+export default Routes;

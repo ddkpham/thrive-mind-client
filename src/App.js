@@ -1,15 +1,27 @@
-import React from "react";
-import { Provider } from 'react-redux'
+import React, { useEffect, useState } from "react";
+import { Provider } from "react-redux";
 import { StylesProvider, ThemeProvider } from "@material-ui/core/styles";
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Routes from './Routes'
-import configureStore from './configureStore'
-import configureTheme from './configureTheme'
-import './app.css'
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Routes from "./Routes";
+import Amplify from "aws-amplify";
+import config from "./configureCognito";
+import configureStore from "./configureStore";
+import configureTheme from "./configureTheme";
+import { Auth } from "aws-amplify";
+import "./app.css";
+
+Amplify.configure({
+  Auth: {
+    mandatorySignId: true,
+    region: config.cognito.REGION,
+    userPoolId: config.cognito.USER_POOL_ID,
+    userPoolWebClientId: config.cognito.APP_CLIENT_ID
+  }
+});
 
 function App() {
-  const store = configureStore()
-  const theme = configureTheme()
+  const store = configureStore();
+  const theme = configureTheme();
 
   return (
     <div>

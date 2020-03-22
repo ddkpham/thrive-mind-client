@@ -1,76 +1,79 @@
-import React, { useState } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { makeStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Divider from '@material-ui/core/Divider'
-import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-import { actions } from '../../app.module'
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import { actions } from "../../app.module";
 
 const useStyles = makeStyles({
   header: {
-    marginBottom: '2rem',
+    marginBottom: "2rem"
   },
   action: {
-    marginTop: 48,
+    marginTop: 48
   },
   divider: {
-    margin: '24px 0',
-  },
-})
+    margin: "24px 0"
+  }
+});
 
-const OutlinedField = props => <TextField variant="outlined" {...props} />
+const OutlinedField = props => <TextField variant="outlined" {...props} />;
 
-const Signup = (props) => {
-  const classes = useStyles()
-  const history = useHistory()
-  const dispatch = useDispatch()
+const Signup = props => {
+  const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
-    username: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    role: '',
-    isSeeking: '',
-  })
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    role: "",
+    isSeeking: ""
+  });
 
-  const handleOnChange = (e) => {
-    const { name, value } = e.target
-    const updatedUser = { ...user }
-    updatedUser[name] = value
+  const handleOnChange = e => {
+    const { name, value } = e.target;
+    const updatedUser = { ...user };
+    updatedUser[name] = value;
 
-    setUser(updatedUser)
-  }
+    setUser(updatedUser);
+  };
 
-  const handleOnChangeRole = (role) => {
-    const updatedUser = { ...user }
-    updatedUser.role = role
-    setUser(updatedUser)
-  }
+  const handleOnChangeRole = role => {
+    const updatedUser = { ...user };
+    updatedUser.role = role;
+    setUser(updatedUser);
+  };
 
-  const handleOnChangeSeeking = (isSeeking) => {
-    const updatedUser = { ...user }
-    updatedUser.isSeeking = isSeeking
-    setUser(updatedUser)
-  }
+  const handleOnChangeSeeking = isSeeking => {
+    const updatedUser = { ...user };
+    updatedUser.isSeeking = isSeeking;
+    setUser(updatedUser);
+  };
 
   const onSignUp = async () => {
-    const isSuccess = await dispatch(actions.signUp(user))
+    const isSuccess = await dispatch(actions.signUp(user));
 
     // TODO: handle success feedback
     if (isSuccess) {
-      history.push('/login')
+      console.log("successful signup");
+      history.push("/login");
     }
-  }
+  };
 
   return (
     <Grid container direction="column">
       <div className={classes.header}>
-        <Typography variant="h5"><b>Signup</b></Typography>
+        <Typography variant="h5">
+          <b>Signup</b>
+        </Typography>
         <Typography color="textSecondary">
           Register for an account with Thrive Mind.
         </Typography>
@@ -119,7 +122,7 @@ const Signup = (props) => {
         <Grid container>
           <Grid item xs={8}>
             <OutlinedField
-              label="Email"
+              label="Email - (Use real email for confirmation)"
               name="email"
               value={user.email}
               onChange={handleOnChange}
@@ -139,53 +142,67 @@ const Signup = (props) => {
       <Grid container spacing={2}>
         <Grid item>
           <Button
-            variant={user.role === 'PATIENT' ? 'contained' : 'outlined'}
+            variant={user.role === "PATIENT" ? "contained" : "outlined"}
             disableElevation
             size="large"
-            onClick={() => handleOnChangeRole('PATIENT')}
-          >Patient</Button>
+            onClick={() => handleOnChangeRole("PATIENT")}
+          >
+            Patient
+          </Button>
         </Grid>
         <Grid item>
           <Button
-            variant={user.role === 'PRACTITIONER' ? 'contained' : 'outlined'}
+            variant={user.role === "PRACTITIONER" ? "contained" : "outlined"}
             disableElevation
             size="large"
-            onClick={() => handleOnChangeRole('PRACTITIONER')}
-          >Practitioner</Button>
+            onClick={() => handleOnChangeRole("PRACTITIONER")}
+          >
+            Practitioner
+          </Button>
         </Grid>
       </Grid>
       <br />
-      <Typography gutterBottom>Are you looking for healthcare services?</Typography>
+      <Typography gutterBottom>
+        Are you looking for healthcare services?
+      </Typography>
       <Grid container spacing={2}>
         <Grid item>
           <Button
-            variant={user.isSeeking ? 'contained' : 'outlined'}
+            variant={user.isSeeking ? "contained" : "outlined"}
             disableElevation
             onClick={() => handleOnChangeSeeking(true)}
-          >Yes</Button>
+          >
+            Yes
+          </Button>
         </Grid>
         <Grid item>
           <Button
-            variant={!user.isSeeking ? 'contained' : 'outlined'}
+            variant={!user.isSeeking ? "contained" : "outlined"}
             disableElevation
             onClick={() => handleOnChangeSeeking(false)}
-          >No</Button>
+          >
+            No
+          </Button>
         </Grid>
       </Grid>
       <Divider className={classes.divider} />
       <Grid container className={classes.action} justify="flex-end" spacing={2}>
         <Grid item>
-          <Link to="/signin"><Button>Back</Button></Link>
+          <Link to="/signin">
+            <Button>Back</Button>
+          </Link>
         </Grid>
         <Grid item>
-          <Button onClick={onSignUp} variant="contained" disableElevation>Register</Button>
+          <Button onClick={onSignUp} variant="contained" disableElevation>
+            Register
+          </Button>
         </Grid>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-Signup.propTypes = {}
-Signup.defaultProps = {}
+Signup.propTypes = {};
+Signup.defaultProps = {};
 
-export default Signup
+export default Signup;

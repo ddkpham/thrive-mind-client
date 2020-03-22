@@ -34,8 +34,8 @@ export default function configureStore(preloadedState) {
   const middlewareEnhancer = applyMiddleware(...middlewares);
   const enhancers = [middlewareEnhancer, monitorReducersEnhancer];
   const composedEnhancers = compose(
-    ...enhancers,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // for redux dev tools
+    ...enhancers
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() // for redux dev tools
   );
 
   const store = createStore(rootReducer, preloadedState, composedEnhancers);

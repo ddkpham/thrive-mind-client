@@ -39,7 +39,7 @@ const Authentication = props => {
     getSession();
   }, []);
 
-  if (checkingSession) return <Redirect to="/services" />;
+  if (token) return <Redirect to="/services" />;
 
   return (
     <Grid container classes={{ container }}>

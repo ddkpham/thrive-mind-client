@@ -145,13 +145,26 @@ const signUp = data => async dispatch => {
     //   })
     // });
 
-    const { username, password, email } = data;
+    const {
+      username,
+      password,
+      email,
+      lastName: family_name,
+      firstName: name,
+      phone: phone_number,
+      isSeeking: is_seeking
+    } = data;
+
     console.log("data", data);
     const res = await Auth.signUp({
       username,
       password,
       attributes: {
-        email: email
+        email: email,
+        family_name: family_name,
+        name: name,
+        phone_number: `+1${phone_number}`,
+        "custom:is_seeking": is_seeking ? "true" : "false"
       }
     });
     console.log("res", res);

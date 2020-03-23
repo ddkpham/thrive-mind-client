@@ -18,7 +18,7 @@ exports.handler = async (event, context, callback) => {
   } = event;
 
   const params = {
-    TableName: "patient",
+    TableName: "healthcareservice-patient",
     Item: {
       pid: clientId,
       first_name: name,

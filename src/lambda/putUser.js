@@ -29,7 +29,7 @@ exports.handler = async (event, context, callback) => {
       is_seeking: is_seeking === "true" ? true : false
     }
   };
-  console.log("params: ", params);
+
   const response = {
     statusCode: 200,
     body: JSON.stringify("User Inserted!")
@@ -40,7 +40,7 @@ exports.handler = async (event, context, callback) => {
   });
   try {
     const data = await documentClient.put(params).promise();
-    console.log("data", data);
+    console.log("exports.handler -> data", data);
   } catch (err) {
     console.log(err);
     response.statusCode = 500;

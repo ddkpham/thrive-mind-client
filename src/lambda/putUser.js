@@ -47,6 +47,5 @@ exports.handler = async (event, context, callback) => {
     response.body = JSON.stringify("USER INSERTION ERROR");
   }
 
-  callback(null, response.statusCode);
-  return response;
+  callback(null, event);
 };

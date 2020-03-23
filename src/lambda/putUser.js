@@ -3,11 +3,13 @@ const AWS = require("aws-sdk");
 AWS.config.update({ region: "us-east-1" });
 
 exports.handler = async (event, context, callback) => {
+  console.log("EVENT:");
+  console.log(event);
   const {
     username,
-    callerContext: { clientId },
     request: {
       userAttributes: {
+        sub,
         name,
         phone_number,
         family_name,
@@ -20,7 +22,7 @@ exports.handler = async (event, context, callback) => {
   const params = {
     TableName: "healthcareservice-patient",
     Item: {
-      pid: clientId,
+      pid: sub,
       first_name: name,
       user_name: username,
       last_name: family_name,

@@ -102,7 +102,11 @@ const signIn = (username, password) => async dispatch => {
     // });
 
     const res = await Auth.signIn(username, password);
-    const token = "Handled by Amplify will remove soon... probably";
+    const {
+      signInUserSession: {
+        idToken: { jwtToken: token }
+      }
+    } = res;
     dispatch(signInSuccess(token));
     console.log("res", res);
     localStorage.setItem("sessionToken", token);

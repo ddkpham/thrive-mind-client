@@ -8,6 +8,7 @@ import Divider from '@material-ui/core/Divider'
 import MUITextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import useFetch from '../../utils/useFetch'
+import mapUserData from '../../utils/mapUserData'
 
 const useStyles = makeStyles({
   root: {
@@ -44,7 +45,7 @@ const Profile = (props) => {
     try {
       const res = await fetch('/profile', {
         method: 'PUT',
-        body: JSON.stringify(user)
+        body: JSON.stringify(mapUserData(user))
       })
     } catch (err) {
       console.log(err)

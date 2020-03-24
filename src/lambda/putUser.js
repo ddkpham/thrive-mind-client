@@ -14,7 +14,7 @@ exports.handler = async (event, context, callback) => {
         phone_number,
         family_name,
         email,
-        "custom:is_seeking": is_seeking
+        is_seeking,
       }
     }
   } = event;

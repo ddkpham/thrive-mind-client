@@ -103,6 +103,17 @@ const Profile = (props) => {
           <Grid item xs={12} md={4}>
             <TextField
               fullWidth
+              label="Email"
+              name="email"
+              value={user?.email}
+              onChange={handleOnChange}
+            />
+          </Grid>
+        </Grid>
+        <Grid container item xs={12}>
+          <Grid item xs={12} md={4}>
+            <TextField
+              fullWidth
               label="Medical History"
               name="medical_history"
               value={user?.medical_history}

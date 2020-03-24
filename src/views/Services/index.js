@@ -65,7 +65,6 @@ const Services = props => {
     const getServices = async () => {
       try {
         const res = await fetch("/services");
-        console.log(res)
         if (res.ok) {
           const data = await res.json();
           setServices(data);

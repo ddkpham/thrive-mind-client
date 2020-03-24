@@ -32,13 +32,29 @@ const TextField = p => <MUITextField variant="outlined" InputProps={{ style: { b
 const Profile = (props) => {
   const classes = useStyles()
   const fetch = useFetch()
-  const userData = useSelector(({ app }) => app.user)
-  const [user, setUser] = useState(userData || { name: '', family_name: '', email: '', phone_number: '' })
+  const [user, setUser] = useState({ name: '', family_name: '', email: '', phone_number: '' })
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
-    if (userData) setUser(userData)
-  }, [userData])
+    const getProfile = async () => {
+      try {
+        const res = await fetch('/profile')
+        setUser(res)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
+    getProfile()
+  }, [])
+
+  const handleOnChange = (e) => {
+    const { name, value } = e.target
+    setUser({
+      ...user,
+      [name]: value,
+    })
+  }
 
   const updateProfile = async () => {
     setSaving(true)
@@ -55,22 +71,43 @@ const Profile = (props) => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h4" gutterBottom><span role="img" aria-label="wave">👋</span> {userData?.name} {userData?.family_name}</Typography>
-      <Typography variant="subtitle1">{userData?.role}</Typography>
+      <Typography variant="h4" gutterBottom><span role="img" aria-label="wave">👋</span> {user?.name} {user?.family_name}</Typography>
+      <Typography variant="subtitle1">{user?.role}</Typography>
       <Divider className={classes.divider} />
       <Grid container spacing={2} classes={{ container: classes.form }}>
         <Grid item xs={6} md="auto">
-          <TextField label="First Name" value={user?.name} />
+          <TextField
+            label="First Name"
+            name="name"
+            value={user?.name}
+            onChange={handleOnChange}
+          />
         </Grid>
         <Grid item xs={6} md="auto">
-          <TextField label="Last Name" value={user?.family_name} />
+          <TextField
+            label="Last Name"
+            name="family_name"
+            value={user?.family_name}
+            onChange={handleOnChange}
+          />
         </Grid>
         <Grid item xs={12}>
-          <TextField label="Phone" value={user?.phone_number} />
+          <TextField
+            label="Phone"
+            name="phone_number"
+            value={user?.phone_number}
+            onChange={handleOnChange}
+          />
         </Grid>
         <Grid container item xs={12}>
           <Grid item xs={12} md={4}>
-            <TextField fullWidth label="Email" value={user?.email} />
+            <TextField
+              fullWidth
+              label="Email"
+              name="email"
+              value={user?.email}
+              onChange={handleOnChange}
+            />
           </Grid>
         </Grid>
       </Grid>

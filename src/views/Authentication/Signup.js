@@ -65,6 +65,22 @@ const Signup = props => {
     }
   };
 
+
+  const validatePassword = () => {
+    const regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+    let re = new RegExp(regex);
+    
+    if(re.test(user.password)){
+      console.log("true")
+      onSignUp();
+    } else{
+      console.log("false")
+      alert("Password must have at least eight characters, one uppercase letter, one lowercase letter, one number and one special character")
+    }
+  };
+
+
+
   return (
     <Grid container direction="column">
       <div className={classes.header}>
@@ -73,6 +89,9 @@ const Signup = props => {
         </Typography>
         <Typography color="textSecondary">
           Register for an account with Thrive Mind.
+        </Typography>
+        <Typography color = "primary" size="2">
+        Password must have at least eight characters, one uppercase letter, one lowercase letter, one number and one special character.
         </Typography>
       </div>
       <Grid item>
@@ -86,12 +105,12 @@ const Signup = props => {
             />
           </Grid>
           <Grid item>
-            <OutlinedField
-              label="Password"
-              name="password"
-              value={user.password}
-              onChange={handleOnChange}
-            />
+              <OutlinedField
+                label="Password"
+                name="password"
+                value={user.password}
+                onChange={handleOnChange}
+              />
           </Grid>
         </Grid>
       </Grid>
@@ -191,7 +210,7 @@ const Signup = props => {
           </Link>
         </Grid>
         <Grid item>
-          <Button onClick={onSignUp} variant="contained" disableElevation>
+          <Button onClick={validatePassword} variant="contained" disableElevation>
             Register
           </Button>
         </Grid>

@@ -1,38 +1,32 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import {
   Switch,
   Route,
   Redirect,
   BrowserRouter as Router
 } from "react-router-dom";
-import Authentication from "./views/Authentication";
 import Header from "./components/Header";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Authentication from "./views/Authentication";
 import Services from "./views/Services";
-import { actions } from "./app.module";
+import Profile from "./views/Profile";
+import useCheckAuth from './utils/useCheckAuth'
 
 const Routes = props => {
-  const dispatch = useDispatch();
-  const { authenticating } = useSelector(({ app }) => app);
-
-  useEffect(() => {
-    dispatch(actions.authenticate());
-  }, [dispatch]);
-
-  if (authenticating) return null;
+  const isAuth = useCheckAuth()
 
   return (
     <Router>
-      <Route path="/services" component={Header} />
+      {isAuth && <Header />}
       <Switch>
         <ProtectedRoute exact path="/services" component={Services} />
+        <ProtectedRoute exact path="/profile" component={Profile} />
         <Route path="/" component={Authentication} />
         <Redirect to="/" />
       </Switch>
     </Router>
-  );
-};
+  )
+}
 
 Routes.propTypes = {};
 Routes.defaultProps = {};

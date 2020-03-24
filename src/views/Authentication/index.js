@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Login from "./Login";
 import Signup from "./Signup";
-import { Auth } from "aws-amplify";
+import Verify from "./Verify";
 
 const useStyles = makeStyles({
   container: { minHeight: "100vh" },
@@ -22,24 +22,7 @@ const Authentication = props => {
   const { token } = useSelector(({ app }) => app);
   const { content, sidebar, container } = useStyles();
 
-  const [checkingSession, setCheckingSession] = useState(false);
-
-  useEffect(() => {
-    async function getSession() {
-      try {
-        const session = await Auth.currentSession();
-        setCheckingSession(true);
-        const user = await Auth.currentAuthenticatedUser();
-        console.log("getSession -> user", user);
-        return session;
-      } catch (err) {
-        console.log("getSession -> err", err);
-      }
-    }
-    getSession();
-  }, []);
-
-  if (token) return <Redirect to="/services" />;
+  if (token) return <Redirect to="/profile" />;
 
   return (
     <Grid container classes={{ container }}>
@@ -50,6 +33,7 @@ const Authentication = props => {
       </Grid>
       <Grid item xs={8} classes={{ root: content }}>
         <Switch>
+          <Route path="/verify" component={Verify} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Redirect to="/login" />

@@ -22,14 +22,15 @@ const GET_PROFILE_REQUEST = "GET_PROFILE_REQUEST";
 const GET_PROFILE_SUCCESS = "GET_PROFILE_SUCCESS";
 const GET_PROFILE_ERROR = "GET_PROFILE_ERROR";
 
-const sessToken = localStorage.getItem("sessionToken");
+const SAVE_CREDENTIALS_FOR_VERIFICATION = 'SAVE_CREDENTIALS_FOR_VERIFICATION'
+
 const initialState = {
   signingIn: false,
   signingUp: false,
   loadingProfile: false,
   authenticating: false,
   user: null,
-  token: sessToken
+  token: null,
 };
 
 // ------------------------------------
@@ -78,77 +79,48 @@ const getProfileRequest = () => ({
   type: GET_PROFILE_REQUEST
 });
 
-const getProfileSuccess = () => ({
-  type: GET_PROFILE_SUCCESS
+const getProfileSuccess = (user) => ({
+  type: GET_PROFILE_SUCCESS,
+  user,
 });
 
 const getProfileError = () => ({
   type: GET_PROFILE_ERROR
 });
 
+const saveCredentialsForVerification = (username, password) => ({
+  type: SAVE_CREDENTIALS_FOR_VERIFICATION,
+  username,
+  password,
+})
+
 const signIn = (username, password) => async dispatch => {
   dispatch(signInRequest());
 
   try {
-    // const res = await fetch("/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     user_name: username,
-    //     user_password: password
-    //   })
-    // });
-
     const res = await Auth.signIn(username, password);
+    console.log(res)
     const {
       signInUserSession: {
-        idToken: { jwtToken: token }
-      }
+        idToken: {
+          jwtToken: token,
+        },
+      },
+      attributes,
     } = res;
-    dispatch(signInSuccess(token));
-    console.log("res", res);
-    localStorage.setItem("sessionToken", token);
-    return true;
-    // if (res.ok) {
-    //   const { token } = await res.json();
 
-    //   // add token to localStorage
-    //   localStorage.setItem("sessionToken", token);
-    //   dispatch(signInSuccess(token));
-    // }
+    dispatch(signInSuccess(token));
+    dispatch(getProfileSuccess(attributes))
   } catch (err) {
     dispatch(signInError());
-    localStorage.removeItem("sessionToken");
-    console.log(err);
-    alert("Invalid username or password. Have you verified your account?");
+    return err.code
   }
 };
 
 const signUp = data => async dispatch => {
   dispatch(signUpRequest());
 
-  // Amplify integration here
-
   try {
-    // const res = await fetch("/register", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     user_name: data.username,
-    //     user_password: data.password,
-    //     first_name: data.firstName,
-    //     last_name: data.lastName,
-    //     email_address: data.email,
-    //     phone: data.phone,
-    //     role: data.role,
-    //     is_seeking: data.isSeeking
-    //   })
-    // });
-
     const {
       username,
       password,
@@ -159,7 +131,6 @@ const signUp = data => async dispatch => {
       isSeeking: is_seeking
     } = data;
 
-    console.log("data", data);
     const res = await Auth.signUp({
       username,
       password,
@@ -171,47 +142,46 @@ const signUp = data => async dispatch => {
         "custom:is_seeking": is_seeking ? "true" : "false"
       }
     });
-    console.log("res", res);
+
     if (res.user) {
       dispatch(signUpSuccess());
+      dispatch(saveCredentialsForVerification(username, password));
       return true;
     }
+
   } catch (err) {
     dispatch(signUpError());
-    localStorage.removeItem("sessionToken");
     console.log(err);
     return false;
   }
 };
 
 const authenticate = () => async dispatch => {
-  // const authFetch = useFetch()
   dispatch(authenticateRequest());
 
-  const sessionToken = localStorage.getItem("sessionToken");
-
   try {
-    if (!sessionToken) throw new Error("Session expired.");
+    const session = await Auth.currentSession()
+    const user = await Auth.currentAuthenticatedUser()
 
-    // const res = await authFetch('/protected')
-    // console.log(await res.json())
-    dispatch(authenticateSuccess(sessionToken));
+    if (!session.isValid()) throw new Error("Session expired.");
+
+    dispatch(authenticateSuccess(session.getAccessToken().getJwtToken()));
+    dispatch(getProfileSuccess(user.attributes))
   } catch (err) {
     dispatch(authenticateError());
-    localStorage.removeItem("sessionToken");
-    console.log(err);
   }
 };
 
 const getProfile = () => async dispatch => {
-  const authFetch = useFetch();
   dispatch(getProfileRequest());
+  const fetch = useFetch()
 
   try {
-    const res = await authFetch("/profile");
-    const user = res.json();
+    const user = await Auth.currentAuthenticatedUser()
+    const userFromDB = await fetch('/profile')
+    console.log(userFromDB)
 
-    dispatch(getProfileSuccess(user));
+    dispatch(getProfileSuccess(user || userFromDB));
   } catch (err) {
     dispatch(getProfileError());
     console.log(err);
@@ -220,9 +190,7 @@ const getProfile = () => async dispatch => {
 
 const signOut = () => dispatch => {
   try {
-    localStorage.removeItem("sessionToken");
-    const signout = Auth.signOut();
-    console.log("signout", signout);
+    Auth.signOut();
     dispatch({ type: SIGNOUT_SUCCESS });
   } catch (err) {
     console.log(err);
@@ -234,7 +202,8 @@ export const actions = {
   signUp,
   signOut,
   authenticate,
-  getProfile
+  getProfile,
+  saveCredentialsForVerification,
 };
 
 // ------------------------------------
@@ -250,7 +219,8 @@ const ACTION_HANDLERS = {
   }),
   [SIGNIN_ERROR]: state => ({
     ...state,
-    token: null
+    token: null,
+    user: null,
   }),
   [AUTHENTICATE_REQUEST]: state => ({
     ...state,
@@ -292,7 +262,14 @@ const ACTION_HANDLERS = {
   [GET_PROFILE_ERROR]: state => ({
     ...state,
     loadingProfile: false
-  })
+  }),
+  [SAVE_CREDENTIALS_FOR_VERIFICATION]: (state, { username, password }) => ({
+    ...state,
+    user: {
+      username,
+      password,
+    },
+  }),
 };
 
 // ------------------------------------

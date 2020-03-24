@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
@@ -44,14 +45,16 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             thrive mind
           </Typography>
-          <Button
-            color="secondary"
-            variant="contained"
-            startIcon={<Account />}
-            className={classes.account}
-          >
-            {user ? user.firstName : 'no user data'}
-          </Button>
+          <Link to="/profile">
+            <Button
+              color="secondary"
+              variant="contained"
+              startIcon={<Account />}
+              className={classes.account}
+            >
+              {user ? `${user?.name} ${user.family_name?.charAt(0)}` : 'no user data'}
+            </Button>
+          </Link>
           <Button color="secondary" onClick={handleOnSignOut}>
             Sign out
           </Button>

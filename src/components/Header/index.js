@@ -50,7 +50,7 @@ export default function ButtonAppBar() {
             startIcon={<Account />}
             className={classes.account}
           >
-            {user ? user.firstName : 'no user data'}
+            {user ? `${user?.name} ${user.family_name?.charAt(0)}` : 'no user data'}
           </Button>
           <Button color="secondary" onClick={handleOnSignOut}>
             Sign out

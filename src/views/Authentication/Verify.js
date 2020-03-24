@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { actions } from "../../app.module";
+import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles({
   root: {
@@ -21,20 +22,30 @@ const useStyles = makeStyles({
 });
 
 /**
- * Default Login view for users who have not signed in yet.
+ * Verify code by email
  */
-const Login = props => {
+const Verify = props => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const history = useHistory()
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const username = useSelector(({ app }) => app.user?.username)
+  const [isCodeSent, setIsCodeSent] = useState(false)
+  const [code, setCode] = useState("");
 
-  const onSignIn = async () => {
-    const errCode = await dispatch(actions.signIn(username, password))
-    if (errCode === 'UserNotConfirmedException') {
-      dispatch(actions.saveUsernameForVerification(username))
-      history.push('/verify')
+  const resendCode = () => {
+    Auth.resendSignUp(username)
+    setIsCodeSent(true)
+
+    setTimeout(() => {
+      setIsCodeSent(false)
+    }, 3000)
+  }
+
+  const onVerifyCode = async () => {
+    try {
+      const res = await Auth.confirmSignUp(username, code)
+      console.log(res)
+    } catch (err) {
+      console.log(err)
     }
   };
 
@@ -48,30 +59,20 @@ const Login = props => {
       <Grid item>
         <div className={classes.header}>
           <Typography variant="h5">
-            <b>Login</b>
+            <b>Verify</b>
           </Typography>
           <Typography color="textSecondary">
-            Sign in with your username and passsword.
+            Check your email for the code and enter it to verify your account.
           </Typography>
         </div>
         <Grid container item spacing={2}>
           <Grid item>
             <TextField
               variant="outlined"
-              label="Username"
-              value={username}
+              label="Code"
+              value={code}
               onChange={e => {
-                setUsername(e.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              variant="outlined"
-              label="Password"
-              value={password}
-              onChange={e => {
-                setPassword(e.target.value);
+                setCode(e.target.value);
               }}
             />
           </Grid>
@@ -80,12 +81,12 @@ const Login = props => {
       <div className={classes.action}>
         <Grid container justify="space-between">
           <Grid item>
-            <Link to="/signup">
-              <Button variant="text">I don't have an account.</Button>
-            </Link>
+            <Button disabled={isCodeSent} variant="contained" onClick={resendCode} disableElevation>
+              {isCodeSent ? 'Sent! Check your email' : 'Resend Code'}
+            </Button>
           </Grid>
           <Grid item>
-            <Button variant="contained" onClick={onSignIn} disableElevation>
+            <Button variant="contained" onClick={onVerifyCode} disableElevation>
               Sign In
             </Button>
           </Grid>
@@ -95,4 +96,4 @@ const Login = props => {
   );
 };
 
-export default Login;
+export default Verify;

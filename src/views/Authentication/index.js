@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Login from "./Login";
 import Signup from "./Signup";
+import Verify from "./Verify";
 import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles({
@@ -24,20 +25,20 @@ const Authentication = props => {
 
   const [checkingSession, setCheckingSession] = useState(false);
 
-  useEffect(() => {
-    async function getSession() {
-      try {
-        const session = await Auth.currentSession();
-        setCheckingSession(true);
-        const user = await Auth.currentAuthenticatedUser();
-        console.log("getSession -> user", user);
-        return session;
-      } catch (err) {
-        console.log("getSession -> err", err);
-      }
-    }
-    getSession();
-  }, []);
+  // useEffect(() => {
+  //   async function getSession() {
+  //     try {
+  //       const session = await Auth.currentSession();
+  //       setCheckingSession(true);
+  //       const user = await Auth.currentAuthenticatedUser();
+  //       console.log("getSession -> user", user);
+  //       return session;
+  //     } catch (err) {
+  //       console.log("getSession -> err", err);
+  //     }
+  //   }
+  //   getSession();
+  // }, []);
 
   if (token) return <Redirect to="/services" />;
 
@@ -50,6 +51,7 @@ const Authentication = props => {
       </Grid>
       <Grid item xs={8} classes={{ root: content }}>
         <Switch>
+          <Route path="/verify" component={Verify} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
           <Redirect to="/login" />

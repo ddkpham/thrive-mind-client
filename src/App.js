@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Provider } from "react-redux";
 import { StylesProvider, ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -7,7 +7,7 @@ import Amplify from "aws-amplify";
 import config from "./configureCognito";
 import configureStore from "./configureStore";
 import configureTheme from "./configureTheme";
-import { Auth } from "aws-amplify";
+import { actions } from './app.module'
 import "./app.css";
 
 Amplify.configure({
@@ -22,6 +22,10 @@ Amplify.configure({
 function App() {
   const store = configureStore();
   const theme = configureTheme();
+
+  useEffect(() => {
+    store.dispatch(actions.authenticate())
+  }, [])
 
   return (
     <div>

@@ -139,7 +139,7 @@ const signUp = data => async dispatch => {
         family_name: family_name,
         name: name,
         phone_number: `+1${phone_number}`,
-        "custom:is_seeking": is_seeking ? "true" : "false"
+        'custom:is_seeking': is_seeking ? "true" : "false"
       }
     });
 
@@ -165,7 +165,7 @@ const authenticate = () => async dispatch => {
 
     if (!session.isValid()) throw new Error("Session expired.");
 
-    dispatch(authenticateSuccess(session.getAccessToken().getJwtToken()));
+    dispatch(authenticateSuccess(session.getIdToken().getJwtToken()));
     dispatch(getProfileSuccess(user.attributes))
   } catch (err) {
     dispatch(authenticateError());

@@ -7,9 +7,9 @@ const useFetch = () => {
 
   return (url, options = { method: "GET" }) => {
     if (options.headers) {
-      options.headers["Authorization"] = token;
+      options.headers["x-access-token"] = token;
     } else {
-      options.headers = { Authorization: token };
+      options.headers = { "x-access-token": token };
     }
 
     // TODO: handle unauthenticated API

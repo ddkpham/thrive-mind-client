@@ -33,7 +33,7 @@ const Login = props => {
   const onSignIn = async () => {
     const errCode = await dispatch(actions.signIn(username, password))
     if (errCode === 'UserNotConfirmedException') {
-      dispatch(actions.saveUsernameForVerification(username))
+      dispatch(actions.saveCredentialsForVerification(username, password))
       history.push('/verify')
     }
   };

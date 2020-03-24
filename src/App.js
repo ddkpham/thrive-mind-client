@@ -19,6 +19,8 @@ Amplify.configure({
   }
 });
 
+console.log(process.env.REACT_APP_API_GATEWAY)
+
 function App() {
   const store = configureStore();
   const theme = configureTheme();

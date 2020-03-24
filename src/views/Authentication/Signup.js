@@ -60,11 +60,8 @@ const Signup = props => {
 
   const onSignUp = async () => {
     const isSuccess = await dispatch(actions.signUp(user));
-
-    // TODO: handle success feedback
     if (isSuccess) {
-      console.log("successful signup");
-      history.push("/login");
+      history.push("/verify");
     }
   };
 
@@ -126,6 +123,7 @@ const Signup = props => {
               name="email"
               value={user.email}
               onChange={handleOnChange}
+              fullWidth
             />
           </Grid>
         </Grid>

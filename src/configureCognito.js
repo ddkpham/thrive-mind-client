@@ -1,7 +1,7 @@
 const config = {
   apiGateway: {
     REGION: "us-east-1",
-    URL: "https://tdoar3ie6j.execute-api.us-east-1.amazonaws.com/prod"
+    URL: process.env.REACT_APP_API_GATEWAY,
   },
   cognito: {
     REGION: "us-east-1",

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -27,12 +27,14 @@ const useStyles = makeStyles({
 const Verify = props => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const username = useSelector(({ app }) => app.user?.username)
+  const user = useSelector(({ app }) => app.user)
   const [isCodeSent, setIsCodeSent] = useState(false)
   const [code, setCode] = useState("");
 
+  if (!user?.username) return <Redirect to="/login" />
+
   const resendCode = () => {
-    Auth.resendSignUp(username)
+    Auth.resendSignUp(user.username)
     setIsCodeSent(true)
 
     setTimeout(() => {
@@ -42,8 +44,10 @@ const Verify = props => {
 
   const onVerifyCode = async () => {
     try {
-      const res = await Auth.confirmSignUp(username, code)
-      console.log(res)
+      const res = await Auth.confirmSignUp(user.username, code)
+      if (res === 'SUCCESS') {
+        dispatch(actions.signIn(user.username, user.password))
+      }
     } catch (err) {
       console.log(err)
     }

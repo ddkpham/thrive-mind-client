@@ -22,7 +22,7 @@ const GET_PROFILE_REQUEST = "GET_PROFILE_REQUEST";
 const GET_PROFILE_SUCCESS = "GET_PROFILE_SUCCESS";
 const GET_PROFILE_ERROR = "GET_PROFILE_ERROR";
 
-const SAVE_USERNAME_FOR_VERIFICATION = 'SAVE_USERNAME_FOR_VERIFICATION'
+const SAVE_CREDENTIALS_FOR_VERIFICATION = 'SAVE_CREDENTIALS_FOR_VERIFICATION'
 
 const initialState = {
   signingIn: false,
@@ -88,9 +88,10 @@ const getProfileError = () => ({
   type: GET_PROFILE_ERROR
 });
 
-const saveUsernameForVerification = (username) => ({
-  type: SAVE_USERNAME_FOR_VERIFICATION,
+const saveCredentialsForVerification = (username, password) => ({
+  type: SAVE_CREDENTIALS_FOR_VERIFICATION,
   username,
+  password,
 })
 
 const signIn = (username, password) => async dispatch => {
@@ -98,13 +99,18 @@ const signIn = (username, password) => async dispatch => {
 
   try {
     const res = await Auth.signIn(username, password);
+    console.log(res)
     const {
       signInUserSession: {
-        idToken: { jwtToken: token }
-      }
+        idToken: {
+          jwtToken: token,
+        },
+      },
+      attributes,
     } = res;
 
     dispatch(signInSuccess(token));
+    dispatch(getProfileSuccess(attributes))
   } catch (err) {
     dispatch(signInError());
     return err.code
@@ -139,12 +145,12 @@ const signUp = data => async dispatch => {
 
     if (res.user) {
       dispatch(signUpSuccess());
+      dispatch(saveCredentialsForVerification(username, password));
       return true;
     }
 
   } catch (err) {
     dispatch(signUpError());
-    // localStorage.removeItem("sessionToken");
     console.log(err);
     return false;
   }
@@ -168,11 +174,14 @@ const authenticate = () => async dispatch => {
 
 const getProfile = () => async dispatch => {
   dispatch(getProfileRequest());
+  const fetch = useFetch()
 
   try {
     const user = await Auth.currentAuthenticatedUser()
+    const userFromDB = await fetch('/profile')
+    console.log(userFromDB)
 
-    dispatch(getProfileSuccess(user));
+    dispatch(getProfileSuccess(user || userFromDB));
   } catch (err) {
     dispatch(getProfileError());
     console.log(err);
@@ -194,7 +203,7 @@ export const actions = {
   signOut,
   authenticate,
   getProfile,
-  saveUsernameForVerification,
+  saveCredentialsForVerification,
 };
 
 // ------------------------------------
@@ -210,7 +219,8 @@ const ACTION_HANDLERS = {
   }),
   [SIGNIN_ERROR]: state => ({
     ...state,
-    token: null
+    token: null,
+    user: null,
   }),
   [AUTHENTICATE_REQUEST]: state => ({
     ...state,
@@ -253,10 +263,11 @@ const ACTION_HANDLERS = {
     ...state,
     loadingProfile: false
   }),
-  [SAVE_USERNAME_FOR_VERIFICATION]: (state, { username }) => ({
+  [SAVE_CREDENTIALS_FOR_VERIFICATION]: (state, { username, password }) => ({
     ...state,
     user: {
       username,
+      password,
     },
   }),
 };

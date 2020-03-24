@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,7 +7,6 @@ import Grid from "@material-ui/core/Grid";
 import Login from "./Login";
 import Signup from "./Signup";
 import Verify from "./Verify";
-import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles({
   container: { minHeight: "100vh" },
@@ -23,24 +22,7 @@ const Authentication = props => {
   const { token } = useSelector(({ app }) => app);
   const { content, sidebar, container } = useStyles();
 
-  const [checkingSession, setCheckingSession] = useState(false);
-
-  // useEffect(() => {
-  //   async function getSession() {
-  //     try {
-  //       const session = await Auth.currentSession();
-  //       setCheckingSession(true);
-  //       const user = await Auth.currentAuthenticatedUser();
-  //       console.log("getSession -> user", user);
-  //       return session;
-  //     } catch (err) {
-  //       console.log("getSession -> err", err);
-  //     }
-  //   }
-  //   getSession();
-  // }, []);
-
-  if (token) return <Redirect to="/services" />;
+  if (token) return <Redirect to="/profile" />;
 
   return (
     <Grid container classes={{ container }}>

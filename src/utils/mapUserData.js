@@ -7,6 +7,10 @@ export default (user) => {
     is_seeking: user['custom:is_seeking'],
     last_name: user.family_name,
     email_address: user.email,
+    medical_history: '',
+    current_prescription: '',
+    preferences: '',
+    health_care_plan: '',
   }
 
   return mappedPayload

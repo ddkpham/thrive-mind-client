@@ -22,14 +22,14 @@ const GET_PROFILE_REQUEST = "GET_PROFILE_REQUEST";
 const GET_PROFILE_SUCCESS = "GET_PROFILE_SUCCESS";
 const GET_PROFILE_ERROR = "GET_PROFILE_ERROR";
 
+const sessToken = localStorage.getItem("sessionToken");
 const initialState = {
   signingIn: false,
   signingUp: false,
   loadingProfile: false,
   authenticating: false,
   user: null,
-  token:
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE1ODE2NTIwNDR9.IeNhs6-QP5DGzSAkkx2W3kIwWU-k8gIKwxVaII0IIUA"
+  token: sessToken
 };
 
 // ------------------------------------

@@ -22,7 +22,8 @@ const Authentication = props => {
   const { token } = useSelector(({ app }) => app);
   const { content, sidebar, container } = useStyles();
 
-  if (token) return <Redirect to="/profile" />;
+  // TODO: handle proper callback, not fixed url
+  if (token) return <Redirect to="/services" />;
 
   return (
     <Grid container classes={{ container }}>

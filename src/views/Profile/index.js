@@ -103,9 +103,42 @@ const Profile = (props) => {
           <Grid item xs={12} md={4}>
             <TextField
               fullWidth
-              label="Email"
-              name="email"
-              value={user?.email}
+              label="Medical History"
+              name="medical_history"
+              value={user?.medical_history}
+              onChange={handleOnChange}
+            />
+          </Grid>
+        </Grid>
+        <Grid container item xs={12}>
+          <Grid item xs={12} md={4}>
+            <TextField
+              fullWidth
+              label="Current Prescription"
+              name="current_prescription"
+              value={user?.current_prescription}
+              onChange={handleOnChange}
+            />
+          </Grid>
+        </Grid>
+        <Grid container item xs={12}>
+          <Grid item xs={12} md={4}>
+            <TextField
+              fullWidth
+              label="Preferences"
+              name="current_prescription"
+              value={user?.current_prescription}
+              onChange={handleOnChange}
+            />
+          </Grid>
+        </Grid>
+        <Grid container item xs={12}>
+          <Grid item xs={12} md={4}>
+            <TextField
+              fullWidth
+              label="Health Care Plan"
+              name="health_care_plan"
+              value={user?.health_care_plan}
               onChange={handleOnChange}
             />
           </Grid>

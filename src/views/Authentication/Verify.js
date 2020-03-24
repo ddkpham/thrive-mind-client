@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -63,36 +63,21 @@ const Verify = props => {
       <Grid item>
         <div className={classes.header}>
           <Typography variant="h5">
-            <b>Verify</b>
+            <b>Verify Email</b>
           </Typography>
           <Typography color="textSecondary">
-            Check your email for the code and enter it to verify your account.
+            Check your email for the verification link.
           </Typography>
         </div>
         <Grid container item spacing={2}>
-          <Grid item>
-            <TextField
-              variant="outlined"
-              label="Code"
-              value={code}
-              onChange={e => {
-                setCode(e.target.value);
-              }}
-            />
-          </Grid>
         </Grid>
       </Grid>
       <div className={classes.action}>
         <Grid container justify="space-between">
           <Grid item>
-            <Button disabled={isCodeSent} variant="contained" onClick={resendCode} disableElevation>
-              {isCodeSent ? 'Sent! Check your email' : 'Resend Code'}
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" onClick={onVerifyCode} disableElevation>
-              Sign In
-            </Button>
+          <Link to="/login">
+              <Button variant="text">Back to Login</Button>
+          </Link>
           </Grid>
         </Grid>
       </div>

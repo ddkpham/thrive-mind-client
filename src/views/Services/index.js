@@ -25,30 +25,46 @@ const useStyles = makeStyles({
 });
 
 const testData = [
-  {
-    id: 1,
-    name: "Test",
-    description: "TestDesc",
-    phone: "123455678",
-    email: "test@test.ca",
-    is_accepting: false
-  },
-  {
-    id: 2,
-    name: "Test",
-    description: "TestDesc",
-    phone: "123455678",
-    email: "test@test.ca",
-    is_accepting: false
-  },
-  {
-    id: 3,
-    name: "Test",
-    description: "TestDesc",
-    phone: "123455678",
-    email: "test@test.ca",
-    is_accepting: false
-  }
+  // {
+  //   id: 1,
+  //   name: "Miranda's Clinic",
+  //   description: "For all the miranda's out there",
+  //   phone: "7789032847",
+  //   email: "miranda@sas.ca",
+  //   is_accepting: false
+  // },
+  // {
+  //   id: 2,
+  //   name: "Bruno's natural healing center",
+  //   description: "When all else has failed and you have no where else to go",
+  //   phone: "123455678",
+  //   email: "bruno@definitelynotascam.ca",
+  //   is_accepting: false
+  // },
+  // {
+  //   id: 3,
+  //   name: "Sarah's Clinic for Diabetes",
+  //   description: "For all the sarah's out there... with diabetes",
+  //   phone: "123455678",
+  //   email: "sarah@diabetesclinic.ca",
+  //   is_accepting: false
+  // },
+  // {
+  //   id: 4,
+  //   name: "Sarah's Clinic for Diabetes",
+  //   description: "For all the sarah's out there... with diabetes",
+  //   phone: "123455678",
+  //   email: "sarah@diabetesclinic.ca",
+  //   is_accepting: false
+  // },
+  // {
+  //   id: 5,
+  //   name: "Sarah's Clinic for Diabetes",
+  //   description: "For all the sarah's out there... with diabetes",
+  //   phone: "123455678",
+  //   email: "sarah@diabetesclinic.ca",
+  //   is_accepting: false
+  // }
 ];
 
 const Services = props => {
@@ -67,7 +83,7 @@ const Services = props => {
         const res = await fetch("/services");
         if (res.ok) {
           const data = await res.json();
-          setServices(data);
+          setServices([...data, ...testData]);
         }
       } catch (err) {
         console.log(err);
@@ -77,23 +93,33 @@ const Services = props => {
     getServices();
   }, []); // eslint-disable-line
 
-  const searchServices = async query => {
-    try {
-      const res = await fetch(`/services/search?search=${query}`);
+  useEffect(() => {
+    const searchServices = async query => {
+      try {
+        if (query) {
+          const res = await fetch(`/services/search?someSearchKey=${query}`);
 
-      if (res.ok) {
-        const searchedServices = await res.json();
-        setServices(searchedServices);
+          if (res.ok) {
+            const searchedServices = await res.json();
+            setServices(searchedServices);
+          }
+        }
+      } catch (err) {
+        console.log(err);
       }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const debouncedSearch = debounce(searchServices, 150);
+    };
+    searchServices(query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
   const handleOnChange = e => {
-    setQuery(e.target.value);
+    const {
+      target: { value }
+    } = e;
+    const delayedUpdate = debounce(() => {
+      setQuery(value);
+    });
+    delayedUpdate();
   };
 
   const filteredServices = query.length ? fuseList.search(query) : services;

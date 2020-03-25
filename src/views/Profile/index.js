@@ -89,10 +89,12 @@ const Profile = props => {
 
   const updateProfile = async () => {
     setSaving(true);
+    const test = user;
+    console.log("updateProfile -> test", test);
     try {
       const res = await fetch("/profile", {
         method: "PUT",
-        body: JSON.stringify(mapUserData(user))
+        body: JSON.stringify(user)
       });
     } catch (err) {
       console.log(err);

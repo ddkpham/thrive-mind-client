@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     store.dispatch(actions.authenticate())
-  }, [])
+  }, []) //eslint-disable-line
 
   return (
     <div>

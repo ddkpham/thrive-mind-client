@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
 import { FormControlLabel, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -9,7 +7,6 @@ import Divider from "@material-ui/core/Divider";
 import MUITextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import useFetch from "../../utils/useFetch";
-import mapUserData from "../../utils/mapUserData";
 
 const useStyles = makeStyles({
   root: {
@@ -50,18 +47,14 @@ const Profile = props => {
     health_care_plan: null,
     is_seeking: true
   });
-  console.log("user", user);
-  console.log("user.is_seeking", user.is_seeking);
 
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    console.log("fetching profile");
     const getProfile = async () => {
       try {
         const res = await fetch("/profile");
         const userData = await res.json();
-        console.log("getProfile -> userData", userData);
         setUser({ ...user, ...userData });
       } catch (err) {
         console.log(err);
@@ -74,7 +67,6 @@ const Profile = props => {
 
   const handleOnChange = e => {
     const { name, value } = e.target;
-    console.log("name, value", name, value);
     setUser({
       ...user,
       [name]: value
@@ -90,24 +82,17 @@ const Profile = props => {
 
   const updateProfile = async () => {
     setSaving(true);
-    const test = user;
-    console.log("updateProfile -> test", test);
-    let success = false;
+
     try {
-      const res = await fetch("/profile", {
+      await fetch("/profile", {
         method: "PUT",
         body: JSON.stringify(user)
       });
-      success = true;
     } catch (err) {
       console.log(err);
     }
+
     setSaving(false);
-    if (success) {
-      console.log(window);
-      const origin = window.location.origin;
-      window.location.href = `${origin}/services`;
-    }
   };
 
   return (
@@ -224,8 +209,9 @@ const Profile = props => {
         size="large"
         color="primary"
         variant="contained"
+        disabled={saving}
       >
-        Save
+        {saving ? 'Saving...' : 'Save'}
       </Button>
     </div>
   );

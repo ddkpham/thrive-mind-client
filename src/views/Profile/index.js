@@ -92,15 +92,22 @@ const Profile = props => {
     setSaving(true);
     const test = user;
     console.log("updateProfile -> test", test);
+    let success = false;
     try {
       const res = await fetch("/profile", {
         method: "PUT",
         body: JSON.stringify(user)
       });
+      success = true;
     } catch (err) {
       console.log(err);
     }
     setSaving(false);
+    if (success) {
+      console.log(window);
+      const origin = window.location.origin;
+      window.location.href = `${origin}/services`;
+    }
   };
 
   return (

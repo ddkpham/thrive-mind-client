@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { FormControlLabel, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -39,12 +40,18 @@ const Profile = props => {
   const classes = useStyles();
   const fetch = useFetch();
   const [user, setUser] = useState({
-    name: "",
-    family_name: "",
-    email: "",
-    phone_number: ""
+    first_name: "",
+    last_name: "",
+    email_address: "",
+    phone: "",
+    medical_history: "",
+    current_prescription: "",
+    health_care_plan: "",
+    is_seeking: true
   });
   console.log("user", user);
+  console.log("user.is_seeking", user.is_seeking);
+
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -66,9 +73,17 @@ const Profile = props => {
 
   const handleOnChange = e => {
     const { name, value } = e.target;
+    console.log("name, value", name, value);
     setUser({
       ...user,
       [name]: value
+    });
+  };
+
+  const handleCheck = bool => {
+    setUser({
+      ...user,
+      is_seeking: bool
     });
   };
 
@@ -91,7 +106,7 @@ const Profile = props => {
         <span role="img" aria-label="wave">
           👋
         </span>{" "}
-        {user?.name} {user?.family_name}
+        {user.first_name} {user.last_name}
       </Typography>
       <Typography variant="subtitle1">{user?.role}</Typography>
       <Divider className={classes.divider} />
@@ -99,7 +114,7 @@ const Profile = props => {
         <Grid item xs={6} md="auto">
           <TextField
             label="First Name"
-            name="name"
+            name="first_name"
             value={user.first_name ? user.first_name : ""}
             onChange={handleOnChange}
           />
@@ -107,7 +122,7 @@ const Profile = props => {
         <Grid item xs={6} md="auto">
           <TextField
             label="Last Name"
-            name="family_name"
+            name="last_name"
             value={user.last_name ? user.last_name : ""}
             onChange={handleOnChange}
           />
@@ -115,7 +130,7 @@ const Profile = props => {
         <Grid item xs={12}>
           <TextField
             label="Phone"
-            name="phone_number"
+            name="phone"
             value={user.phone ? user.phone : ""}
             onChange={handleOnChange}
           />
@@ -125,7 +140,7 @@ const Profile = props => {
             <TextField
               fullWidth
               label="Email"
-              name="email"
+              name="email_address"
               value={user.email_address ? user.email_address : ""}
               onChange={handleOnChange}
             />
@@ -172,6 +187,24 @@ const Profile = props => {
               name="health_care_plan"
               value={user.health_care_plan ? user.health_care_plan : ""}
               onChange={handleOnChange}
+            />
+          </Grid>
+        </Grid>
+        <Grid container item xs={12}>
+          <Grid item xs={12} md={4}>
+            <FormControlLabel
+              value="start"
+              control={
+                <Checkbox
+                  color="primary"
+                  name="is_seeking"
+                  value={!!user.is_seeking}
+                  checked={!!user.is_seeking}
+                  onChange={() => handleCheck(!user.is_seeking)}
+                />
+              }
+              label="is Seeking Services"
+              labelPlacement="start"
             />
           </Grid>
         </Grid>

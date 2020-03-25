@@ -44,9 +44,10 @@ const Profile = props => {
     last_name: "",
     email_address: "",
     phone: "",
-    medical_history: "",
-    current_prescription: "",
-    health_care_plan: "",
+    medical_history: null,
+    current_prescription: null,
+    preferences: null,
+    health_care_plan: null,
     is_seeking: true
   });
   console.log("user", user);
@@ -61,7 +62,7 @@ const Profile = props => {
         const res = await fetch("/profile");
         const userData = await res.json();
         console.log("getProfile -> userData", userData);
-        setUser(userData);
+        setUser({ ...user, ...userData });
       } catch (err) {
         console.log(err);
       }
@@ -175,8 +176,8 @@ const Profile = props => {
             <TextField
               fullWidth
               label="Preferences"
-              name="current_prescription"
-              value={user?.current_prescription}
+              name="preferences"
+              value={user.preferences ? user.preferences : ""}
               onChange={handleOnChange}
             />
           </Grid>

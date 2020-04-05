@@ -13,19 +13,19 @@ const useStyles = makeStyles({
     padding: "100px 48px 48px",
     height: "100%",
     minHeight: "100vh",
-    backgroundColor: "#E1E7ED"
+    backgroundColor: "#E1E7ED",
   },
   divider: {
     margin: "24px 0",
-    maxWidth: 500
+    maxWidth: 500,
   },
   form: {
-    marginBottom: 24
-  }
+    marginBottom: 24,
+  },
 });
 
 // fastest way to avoid the white corners
-const TextField = p => (
+const TextField = (p) => (
   <MUITextField
     variant="outlined"
     InputProps={{ style: { backgroundColor: "#fff" } }}
@@ -33,7 +33,7 @@ const TextField = p => (
   />
 );
 
-const Profile = props => {
+const Profile = (props) => {
   const classes = useStyles();
   const fetch = useFetch();
   const [user, setUser] = useState({
@@ -45,7 +45,7 @@ const Profile = props => {
     current_prescription: null,
     preferences: null,
     health_care_plan: null,
-    is_seeking: true
+    is_seeking: true,
   });
 
   const [saving, setSaving] = useState(false);
@@ -65,34 +65,40 @@ const Profile = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleOnChange = e => {
+  const handleOnChange = (e) => {
     const { name, value } = e.target;
     setUser({
       ...user,
-      [name]: value
+      [name]: value,
     });
   };
 
-  const handleCheck = bool => {
+  const handleCheck = (bool) => {
     setUser({
       ...user,
-      is_seeking: bool
+      is_seeking: bool,
     });
   };
 
   const updateProfile = async () => {
     setSaving(true);
-
+    let success = false;
     try {
       await fetch("/profile", {
         method: "PUT",
-        body: JSON.stringify(user)
+        body: JSON.stringify(user),
       });
+      success = true;
     } catch (err) {
       console.log(err);
     }
 
     setSaving(false);
+    if (success) {
+      console.log(window);
+      const origin = window.location.origin;
+      window.location.href = `${origin}/services`;
+    }
   };
 
   return (
@@ -211,7 +217,7 @@ const Profile = props => {
         variant="contained"
         disabled={saving}
       >
-        {saving ? 'Saving...' : 'Save'}
+        {saving ? "Saving..." : "Save"}
       </Button>
     </div>
   );

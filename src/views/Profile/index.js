@@ -95,9 +95,7 @@ const Profile = (props) => {
 
     setSaving(false);
     if (success) {
-      console.log(window);
-      const origin = window.location.origin;
-      window.location.href = `${origin}/services`;
+      alert("Profile has been updated.");
     }
   };
 

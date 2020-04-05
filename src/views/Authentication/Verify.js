@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { actions } from "../../app.module";
-import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles({
   root: {
@@ -25,33 +22,10 @@ const useStyles = makeStyles({
  * Verify code by email
  */
 const Verify = props => {
-  const dispatch = useDispatch();
   const classes = useStyles();
   const user = useSelector(({ app }) => app.user)
-  const [isCodeSent, setIsCodeSent] = useState(false)
-  const [code, setCode] = useState("");
 
   if (!user?.username) return <Redirect to="/login" />
-
-  const resendCode = () => {
-    Auth.resendSignUp(user.username)
-    setIsCodeSent(true)
-
-    setTimeout(() => {
-      setIsCodeSent(false)
-    }, 3000)
-  }
-
-  const onVerifyCode = async () => {
-    try {
-      const res = await Auth.confirmSignUp(user.username, code)
-      if (res === 'SUCCESS') {
-        dispatch(actions.signIn(user.username, user.password))
-      }
-    } catch (err) {
-      console.log(err)
-    }
-  };
 
   return (
     <Grid

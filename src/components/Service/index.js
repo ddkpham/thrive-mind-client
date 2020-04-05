@@ -6,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
 
 const Service = (props) => {
-  const { name, description, phone, email, is_accepting } = props
+  const { name, description, phone, email } = props
 
   return (
     <Card>

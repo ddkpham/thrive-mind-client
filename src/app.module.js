@@ -1,4 +1,3 @@
-import fetch from "./utils/fetch";
 import useFetch from "./utils/useFetch";
 import { Auth } from "aws-amplify";
 // ------------------------------------

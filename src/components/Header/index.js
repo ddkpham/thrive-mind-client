@@ -72,7 +72,6 @@ export default function ButtonAppBar(props) {
               variant="contained"
               startIcon={<Account />}
               className={classes.account}
-              onClick={() => console.log("hello")}
             >
               {user
                 ? `${user?.name} ${user.family_name?.charAt(0)}`

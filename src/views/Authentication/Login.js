@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -17,7 +17,11 @@ const useStyles = makeStyles({
   },
   action: {
     marginTop: "1rem"
-  }
+  },
+  err: {
+    color: 'red',
+    marginTop: 8,
+  },
 });
 
 /**
@@ -26,15 +30,28 @@ const useStyles = makeStyles({
 const Login = props => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const history = useHistory()
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [err, setErr] = useState(null)
 
   const onSignIn = async () => {
+    if (!username) {
+      setErr('Username cannot be left blank.')
+      return
+    }
+
+    if (!password) {
+      setErr('Password cannot be left blank.')
+      return
+    }
+
     const errCode = await dispatch(actions.signIn(username, password))
     if (errCode === 'UserNotConfirmedException') {
-      dispatch(actions.saveCredentialsForVerification(username, password))
-      history.push('/verify')
+      setErr('Check your email for a verification link from us.')
+    }
+
+    if (errCode === 'NotAuthorizedException') {
+      setErr('Incorrect username or password.')
     }
   };
 
@@ -77,6 +94,7 @@ const Login = props => {
           </Grid>
         </Grid>
       </Grid>
+      {err && <Typography className={classes.err}>{err}</Typography>}
       <div className={classes.action}>
         <Grid container justify="space-between">
           <Grid item>

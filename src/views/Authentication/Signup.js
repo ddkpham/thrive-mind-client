@@ -71,17 +71,18 @@ const Signup = props => {
 
     let pwCheck = new RegExp(passwordRegex);
     let phCheck = new RegExp(phoneRegex);
-    
+
     if(!pwCheck.test(user.password)){
       alert("Password must have at least eight characters, one uppercase letter, one lowercase letter, one number and one special character")
+      return
     }
+
     if(!phCheck.test(user.phone)){
-      console.log("no can do")
       alert("Phone number must be numbers with no spaces or symbols")
+      return
     }
-    else{
-      onSignUp();
-    }
+
+    onSignUp()
   };
 
   return (
